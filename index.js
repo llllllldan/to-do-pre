@@ -60,10 +60,36 @@ const createItem = (item) => {
 	return clone;
 };
 
-function getTasksFromDOM() {
+const getTasksFromDOM = () => {
+	const itemsNamesElements = document.querySelectorAll(".to-do__item-text");
+	const tasks = [];
 
-}
+	itemsNamesElements.forEach((itemElement) => {
+		tasks.push(itemElement.textContent);
+	});
 
-function saveTasks(tasks) {
+	return tasks;
+};
 
-}
+const saveTasks = (tasks) => {
+	localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
+items = loadTasks();
+
+items.forEach((item) => {
+	const listItem = createItem(item);
+	listElement.append(listItem);
+});
+
+formElement.addEventListener("submit", (e) => {
+	const item = inputElement.value;
+	const listItem = createItem(item);
+
+	listElement.prepend(listItem);
+	items = getTasksFromDOM();
+	saveTasks(items);
+	inputElement.value = "";
+
+	e.preventDefault();
+});
